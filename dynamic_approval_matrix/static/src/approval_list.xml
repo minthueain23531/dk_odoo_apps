@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="dynamic_approval_matrix.ListHeader" t-inherit="web.ListRenderer" t-inherit-mode="extension">
+        <xpath expr="//thead//t[@t-foreach='columns']/th[@t-else]" position="before">
+            <th t-elif="column.type === 'dam_status'" class="text-nowrap" tabindex="-1" t-on-keydown="(ev) => this.onCellKeydown(ev)">Approval Status</th>
+        </xpath>
+    </t>
+    <t t-name="dynamic_approval_matrix.ListStatus" t-inherit="web.ListRenderer.RecordRow" t-inherit-mode="extension">
+        <xpath expr="//t[@t-foreach='getColumns(record)']" position="inside">
+            <td t-if="column.type === 'dam_status'" class="o_data_cell text-nowrap" tabindex="-1"
+                t-att-title="damStatus.values[record.resId]?.button || ''"
+                t-on-keydown="(ev) => this.onCellKeydown(ev, group, record)"
+                t-on-click="(ev) => this.onCellClicked(record, column, ev)">
+                <span t-esc="approvalListStatus(record)"/>
+            </td>
+        </xpath>
+    </t>
+</templates>
