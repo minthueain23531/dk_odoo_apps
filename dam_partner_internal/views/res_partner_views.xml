@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_dam_sample" model="ir.ui.view">
+        <field name="name">res.partner.form.dam.sample</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="after">
+                <field name="dam_approval_status" invisible="True"/>
+                <div class="mb-2">
+                    <button name="action_dam_sample_approval" type="object"
+                            string="Sample Approval" class="btn-secondary"/>
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='phone'][not(ancestor::field)]" position="attributes">
+                <!-- Odoo 18 uses direct modifiers instead of attrs. -->
+                <attribute name="readonly" add="dam_approval_status == 'level_1_approved'" separator=" or "/>
+            </xpath>
+        </field>
+    </record>
+    <!-- Run after the button view exists, on both installation and upgrade. -->
+    <function model="dam.button" name="_sync_catalog"/>
+</odoo>

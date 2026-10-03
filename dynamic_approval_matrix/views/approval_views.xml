@@ -112,7 +112,7 @@
         <field name="name">Approval Transactions</field><field name="res_model">dam.request</field>
         <field name="view_mode">list,form</field>
     </record>
-    <menuitem id="menu_dam_root" name="Dynamic Approval" sequence="65" groups="group_dam_manager"/>
+    <menuitem id="menu_dam_root" name="Dynamic Approval" sequence="65" groups="group_dam_manager" web_icon="dynamic_approval_matrix,static/description/icon.png"/>
     <menuitem id="menu_dam_rules" name="Approval Matrix" parent="menu_dam_root" action="action_dam_rules" sequence="10"/>
     <menuitem id="menu_dam_requests" name="Transactions" parent="menu_dam_root" action="action_dam_requests" sequence="20"/>
 </odoo>
