@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.dynamic.approval</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app string="Dynamic Approval" name="dynamic_approval_matrix" groups="base.group_system">
+                    <block title="Next Approver Notifications" name="dam_notification_settings">
+                        <setting id="dam_web_notify" string="Web Notify" company_dependent="1"
+                                 help="Show a browser popup and a Discuss inbox message to the next approvers for this company.">
+                            <field name="dam_web_notify"/>
+                        </setting>
+                        <setting id="dam_email_notify" string="Email Notification" company_dependent="1"
+                                 help="Queue an email to the next approvers for this company. Approval requirements remain unchanged when notifications are disabled.">
+                            <field name="dam_email_notify"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+    <record id="action_dam_config_settings" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module': 'dynamic_approval_matrix', 'bin_size': False}</field>
+    </record>
+    <menuitem id="menu_dam_configuration" name="Configuration"
+              parent="menu_dam_root" sequence="30" groups="base.group_system"/>
+    <menuitem id="menu_dam_settings" name="Settings"
+              parent="menu_dam_configuration" action="action_dam_config_settings"
+              sequence="10" groups="base.group_system"/>
+</odoo>

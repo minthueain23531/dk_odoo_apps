@@ -1,4 +1,5 @@
 import ast
+import logging
 import math
 from urllib.parse import urlencode
 
@@ -10,6 +11,8 @@ from odoo.osv import expression
 from odoo.tools import SQL, float_compare
 
 from .guard import button_dispatch, discover_buttons, executing, install_guards, remove_guards
+
+_logger = logging.getLogger(__name__)
 
 
 class ApprovalButton(models.Model):
@@ -607,6 +610,31 @@ class ApprovalStep(models.Model):
     signature = fields.Binary(attachment=False, copy=False)
     remark = fields.Text(copy=False)
     notified_at = fields.Datetime(string='Approvers Notified At', readonly=True, copy=False)
+    email_notified_at = fields.Datetime(string='Approval Email Queued At', readonly=True, copy=False)
+
+    def _get_approval_document_url(self):
+        self.ensure_one()
+        request = self.request_id
+        document = self.env[request.model_name].with_company(request.company_id).browse(request.res_id)
+        return document.get_base_url().rstrip('/') + '/web#' + urlencode({
+            'id': request.res_id, 'model': request.model_name, 'view_type': 'form'})
+
+    def _queue_approval_emails(self, users):
+        """Queue only; SMTP failures must not roll back a signed approval."""
+        self.ensure_one()
+        template = self.env.ref('dynamic_approval_matrix.mail_template_next_approver')
+        queued = False
+        for user in users:
+            if not user.email:
+                _logger.warning('Approval step %s: user %s has no email; email skipped', self.id, user.id)
+                continue
+            template.sudo().with_company(self.company_id).with_context(lang=user.lang).send_mail(
+                self.id, force_send=False,
+                email_values={'recipient_ids': [Command.set(user.partner_id.ids)],
+                              'email_to': False, 'email_cc': False})
+            queued = True
+        if queued:
+            self.sudo().write({'email_notified_at': fields.Datetime.now()})
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -641,11 +669,28 @@ class ApprovalStep(models.Model):
     def _notify_approvers(self):
         """Called after a signed level transition, in the same transaction."""
         self.ensure_one()
-        if self.state != 'pending' or self.notified_at:
+        if self.state != 'pending':
             return
         request = self.request_id
+        company = request.company_id
+        send_web = company.dam_web_notify and not self.notified_at
+        send_email = company.dam_email_notify and not self.email_notified_at
+        if not send_web and not send_email:
+            return
         users = self.user_ids.filtered(lambda user: user.active and not user.share
                                        and request.company_id in user.company_ids)
+        # Apply the same document access checks to both delivery channels.
+        document = self.env[request.model_name].browse(request.res_id).exists()
+        if not document:
+            return
+        eligible = users.browse()
+        for user in users:
+            try:
+                document.with_user(user).with_context(allowed_company_ids=company.ids).check_access('read')
+            except AccessError:
+                continue
+            eligible |= user
+        users = eligible
         if not users:
             return
         message = self._get_approval_notification_message()
@@ -656,12 +701,15 @@ class ApprovalStep(models.Model):
             'context': {'allowed_company_ids': [request.company_id.id],
                         'params': {'button_name': _('Open Document')}},
         }
-        delivery = users._push_notify(
-            message, title=_('Approval Required'), notification_type='info',
-            duration=60000, sticky=False, popup=True, inbox=True,
-            action=action, company=request.company_id)
-        if delivery:
-            self.sudo().write({'notified_at': fields.Datetime.now()})
+        if send_web:
+            delivery = users._push_notify(
+                message, title=_('Approval Required'), notification_type='info',
+                duration=60000, sticky=False, popup=True, inbox=True,
+                action=action, company=company)
+            if delivery:
+                self.sudo().write({'notified_at': fields.Datetime.now()})
+        if send_email:
+            self._queue_approval_emails(users)
 
     def _signature_data(self):
         self.ensure_one()

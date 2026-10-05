@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_company_form_approval_notifications" model="ir.ui.view">
+        <field name="name">res.company.form.approval.notifications</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page name="dam_notifications" string="Approval Notifications">
+                    <group string="Next Approver Notifications">
+                        <field name="dam_web_notify"/>
+                        <field name="dam_email_notify"/>
+                    </group>
+                    <p class="text-muted">These settings apply to approvals for this company. Web Notify includes browser popups and Discuss inbox messages. Email uses the outgoing mail queue. Approval requirements remain unchanged even when both options are disabled.</p>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

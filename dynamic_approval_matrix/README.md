@@ -1,5 +1,35 @@
 # Dynamic Approval Matrix
 
+## Company notification settings (18.0.1.8.0)
+
+From 18.0.1.8.1, the same options are also available under **Settings > Dynamic
+Approval** for the selected company. Save the settings after changing them.
+Both settings screens read and write the same company fields.
+Administrators can also open these settings directly from **Dynamic Approval >
+Configuration > Settings** (18.0.1.8.2).
+
+Open **Settings > Users & Companies > Companies**, select the company, then open
+**Approval Notifications**. Web Notify controls the existing popup plus Discuss
+inbox delivery. Email Notification independently queues an email for the next
+eligible approvers. Enable either, both, or neither. Approval requirements are
+unchanged, including when both are disabled. Existing companies default to Web
+Notify enabled and Email disabled. The approval document's company determines
+the settings, not the current user's selected company.
+
+Emails use the standard outgoing queue (never synchronous SMTP during approval).
+Configure the company email/sender, approver emails, outgoing server and a
+reachable Odoo base URL. The editable template is **Dynamic Approval: Next
+Approver** under technical email templates. Its document link requires normal
+Odoo login and document access. Recipients without document access are skipped;
+missing email addresses are logged and do not block approval.
+
+Administrators can inspect failed/queued messages under **Settings > Technical >
+Email > Emails** and retry failed messages there. **Approval Email Queued At** in
+the transaction's approval levels records queue creation, not successful SMTP
+delivery. Changing company settings affects subsequent notification attempts;
+it does not recall queued mail or automatically resend past approvals. Email
+and Web Notify track delivery separately to avoid duplicates on repeated calls.
+
 Odoo 18 module by **devkid**. Configure sequential approval on existing public
 `type="object"` form buttons without writing a model-specific Python override.
 

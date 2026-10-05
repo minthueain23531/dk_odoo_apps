@@ -1,6 +1,6 @@
 {
     'name': 'Dynamic Approval Matrix',
-    'version': '18.0.1.7.0',
+    'version': '18.0.1.8.2',
     'summary': 'Configure sequential approval on existing form buttons',
     'author': 'devkid',
     'category': 'Productivity',
@@ -11,6 +11,9 @@
         'security/security.xml',
         'security/ir.model.access.csv',
         'views/approval_views.xml',
+        'views/res_company_views.xml',
+        'views/res_config_settings_views.xml',
+        'data/mail_template.xml',
         'wizard/approval_wizard_views.xml',
         'wizard/reset_wizard_views.xml',
     ],
