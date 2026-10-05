@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dam_button_manager,Approval button catalog,model_dam_button,group_dam_manager,1,0,0,0
+access_dam_rule_manager,Approval matrix configuration,model_dam_rule,group_dam_manager,1,1,1,0
+access_dam_line_manager,Approval matrix levels,model_dam_rule_line,group_dam_manager,1,1,1,1
+access_dam_request_manager,Approval transactions read only,model_dam_request,group_dam_manager,1,0,0,0
+access_dam_step_manager,Approval steps read only,model_dam_step,group_dam_manager,1,0,0,0
+access_dam_event_manager,Approval history read only,model_dam_event,group_dam_manager,1,0,0,0
+access_dam_lock_denied,Internal lock no user access,model_dam_lock,base.group_user,0,0,0,0
+access_dam_approval_wizard_user,Sign own approval wizard,model_dam_approval_wizard,base.group_user,1,1,0,1
+access_dam_reset_wizard_manager,Reset own approval wizard,model_dam_reset_wizard,group_dam_manager,1,1,0,1

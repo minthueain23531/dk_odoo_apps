@@ -1,0 +1,22 @@
+<section class="container" style="max-width:1100px;padding:48px 24px;font-family:Arial,sans-serif;color:#173344;">
+  <img src="icon.png" alt="Dynamic Approval Matrix" width="88" height="88"/>
+  <p style="color:#745478;margin-top:24px;">ODOO 17 · BY DEVKID</p>
+  <h1 style="font-size:40px;">Dynamic Approval Matrix</h1>
+  <p style="font-size:21px;line-height:1.6;">Configure sequential approvals on supported existing document buttons.</p>
+  <div style="background:#f5f0f7;padding:24px;border-radius:12px;line-height:1.8;">
+    <h2>Control the approval process</h2>
+    <ul><li>Select a model, supported object button, company and document domain.</li><li>Use amount ranges or unconditional approval levels.</li><li>Collect a signature and remark at each approved or rejected level.</li><li>Notify the next eligible approvers through Discuss and a one-minute popup.</li><li>Preserve history when managers reset a pending or rejected cycle.</li></ul>
+  </div>
+  <h2 style="margin-top:36px;">See progress on the document</h2>
+  <img src="screenshot.png" alt="Approval matrix configuration with two approval levels" style="max-width:100%;border:1px solid #e2dce5;border-radius:8px;"/>
+  <p>A form panel shows approvers, decisions and history. The list status follows the first button that started approval on each document. An optional mixin exposes the same status to custom view modifiers.</p>
+  <h2>Built around existing permissions</h2>
+  <p>The original business method runs with the acting user's permissions. Amount/applicability changes require a new cycle. Final business validation failures preserve earlier committed approval levels.</p>
+  <h2>Supported scope</h2>
+  <p>Supports discovered public <code>type="object"</code> buttons on saved, single business records. Buttons using the same Python method share approval. Not all methods are suitable: validate each selected workflow in a staging database.</p>
+  <p>Action buttons (<code>type="action"</code>), bulk approval, general transient-wizard controls, delegation and email delivery are not included. Opening a returned wizard is not proof of final business execution.</p>
+  <h2>Installation</h2>
+  <p>Install Web Push Notify and Dynamic Approval Matrix. The only non-standard dependency is the companion <code>web_push_notify</code> addon by devkid; the original web_notify addon is not required. Restart workers and reload clients after deployment. See the included README for configuration and upgrade notes.</p>
+  <p>Uninstall deletes this addon's approval configuration and history. Archive rules when that information must be retained. The optional partner sample is not part of the production package.</p>
+  <p>Author: devkid · License: LGPL-3</p>
+</section>

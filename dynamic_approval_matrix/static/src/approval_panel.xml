@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-name="dynamic_approval_matrix.ApprovalPanel">
+        <section t-if="state.panels.length || state.error" class="mt-4 border-top pt-3 o_dam_approval_panel">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h4 class="mb-0">Button Approvals</h4>
+                <button type="button" class="btn btn-link" t-on-click="refresh">Refresh</button>
+            </div>
+            <div t-if="state.error" class="alert alert-warning" role="alert" t-esc="state.error"/>
+            <div t-foreach="state.panels" t-as="panel" t-key="panel.key" class="mb-3">
+                <div class="d-flex gap-2 align-items-center mb-2">
+                    <strong t-esc="panel.label"/><span class="badge text-bg-secondary" t-esc="label(panel.state)"/>
+                    <button t-if="panel.can_reset" type="button" class="btn btn-outline-secondary btn-sm ms-auto" t-on-click="() => this.reset(panel)">Reset Approval</button>
+                </div>
+                <div t-if="panel.changed" class="alert alert-info py-2">The approval amount or applicability changed, or this document has a new execution cycle. Its next button click will evaluate approval again.</div>
+                <div t-if="panel.error" class="alert alert-warning py-2" t-esc="panel.error"/>
+                <div class="table-responsive"><table class="table table-sm">
+                    <thead><tr><th>Level</th><th>To Approve</th><th>Status</th><th>Decision By</th><th>Decision At (UTC)</th><th>Signature / Remark</th></tr></thead>
+                    <tbody><tr t-foreach="panel.steps" t-as="step" t-key="step.level">
+                        <td t-esc="step.level"/><td t-esc="step.users"/><td t-esc="label(step.state)"/>
+                        <td t-esc="step.by"/><td t-esc="step.at"/>
+                        <td><img t-if="step.signature" t-att-src="'data:image/png;base64,' + step.signature" alt="Approval signature" style="max-width: 160px; max-height: 64px;"/>
+                            <div t-if="step.remark" class="text-break" style="white-space: pre-wrap;" t-esc="step.remark"/>
+                        </td>
+                    </tr></tbody>
+                </table></div>
+                <details t-if="panel.history.length"><summary class="mb-2">Approval History</summary>
+                    <ul class="list-unstyled"><li t-foreach="panel.history" t-as="event" t-key="event.id" class="mb-1">
+                        <span class="text-muted" t-esc="event.at"/> UTC · <strong t-esc="event.by"/> · <span t-esc="event.message"/>
+                        <div t-if="event.signature || event.remark" class="ms-3 mt-1">
+                            <img t-if="event.signature" t-att-src="'data:image/png;base64,' + event.signature" alt="Historical approval signature" style="max-width: 160px; max-height: 64px;"/>
+                            <div t-if="event.remark" class="text-break" style="white-space: pre-wrap;" t-esc="event.remark"/>
+                        </div>
+                    </li></ul>
+                </details>
+            </div>
+        </section>
+    </t>
+</templates>

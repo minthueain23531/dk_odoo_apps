@@ -1,0 +1,33 @@
+{
+    'name': 'Dynamic Approval Matrix',
+    'version': '17.0.1.8.2',
+    'summary': 'Configure sequential approval on existing form buttons',
+    'author': 'devkid',
+    'category': 'Productivity',
+    'license': 'LGPL-3',
+    'depends': ['web_push_notify'],
+    'images': ['static/description/screenshot.png'],
+    'data': [
+        'security/security.xml',
+        'security/ir.model.access.csv',
+        'views/approval_views.xml',
+        'views/res_company_views.xml',
+        'views/res_config_settings_views.xml',
+        'data/mail_template.xml',
+        'wizard/approval_wizard_views.xml',
+        'wizard/reset_wizard_views.xml',
+    ],
+    'assets': {
+        'web.assets_backend': [
+            'dynamic_approval_matrix/static/src/approval_notifications.js',
+            'dynamic_approval_matrix/static/src/approval_panel.js',
+            'dynamic_approval_matrix/static/src/approval_panel.xml',
+            'dynamic_approval_matrix/static/src/approval_list.js',
+            'dynamic_approval_matrix/static/src/approval_list.xml',
+        ],
+    },
+    'post_init_hook': 'post_init_hook',
+    'uninstall_hook': 'uninstall_hook',
+    'application': True,
+    'installable': True,
+}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_category_dam" model="ir.module.category">
+        <field name="name">Dynamic Approval</field>
+        <field name="sequence">35</field>
+    </record>
+    <record id="group_dam_manager" model="res.groups">
+        <field name="name">Approval Manager</field>
+        <field name="category_id" ref="module_category_dam"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+    </record>
+    <record id="rule_matrix_company" model="ir.rule">
+        <field name="name">Approval matrix companies</field>
+        <field name="model_id" ref="model_dam_rule"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_line_company" model="ir.rule">
+        <field name="name">Approval level companies</field>
+        <field name="model_id" ref="model_dam_rule_line"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_request_company" model="ir.rule">
+        <field name="name">Approval transaction companies</field>
+        <field name="model_id" ref="model_dam_request"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_step_company" model="ir.rule">
+        <field name="name">Approval transaction level companies</field>
+        <field name="model_id" ref="model_dam_step"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_event_company" model="ir.rule">
+        <field name="name">Approval history companies</field>
+        <field name="model_id" ref="model_dam_event"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

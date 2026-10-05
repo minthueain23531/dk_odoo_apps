@@ -1,0 +1,24 @@
+<section class="container" style="max-width:1100px;padding:48px 24px;font-family:Arial,sans-serif;color:#173344;">
+  <img src="icon.png" alt="Web Push Notify" width="88" height="88"/>
+  <p style="color:#127d80;margin-top:24px;">ODOO 17 · BY DEVKID</p>
+  <h1 style="font-size:40px;">Web Push Notify</h1>
+  <p style="font-size:21px;line-height:1.6;">One reusable API for in-app popups and persistent Discuss inbox notifications.</p>
+  <div style="background:#edf7f5;padding:24px;border-radius:12px;line-height:1.8;">
+    <h2>Notifications that fit your workflow</h2>
+    <ul><li>Send to multiple active internal users in one call.</li><li>Choose popup, inbox, or both.</li><li>Configure popup duration or keep it visible until dismissed.</li><li>Open an authorized document directly from the notification.</li><li>Use plain text or sanitized HTML.</li></ul>
+  </div>
+  <h2 style="margin-top:36px;">Built for custom addons</h2>
+  <img src="screenshot.png" alt="Approval notification with an Open Document button" style="max-width:100%;border:1px solid #dbe5e7;border-radius:8px;"/>
+  <p>Private Python API, company-aware recipients, per-recipient document access checks, and transaction-bound delivery. A shared message has one inbox notification per recipient. No emails are queued.</p>
+  <pre style="background:#173344;color:white;padding:24px;border-radius:12px;white-space:pre-wrap;">users._push_notify(
+    'Please review this document.',
+    title='Review Required',
+    duration=60000,
+    popup=True,
+    inbox=True,
+)</pre>
+  <h2>Scope and requirements</h2>
+  <p>Requires Odoo 17 with standard Web, Mail and Bus modules. Popups appear in a connected Odoo backend session. This is not browser/OS push and does not deliver popups while Odoo is closed. Inbox messages remain available after popup dismissal.</p>
+  <p>Developer integration is required. The caller controls business authorization and event deduplication. Supported actions open one existing document form. See the included README for the API and deployment requirements.</p>
+  <p>Author: devkid · License: LGPL-3</p>
+</section>

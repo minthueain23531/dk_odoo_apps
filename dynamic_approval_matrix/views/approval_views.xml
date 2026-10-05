@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dam_rule_list" model="ir.ui.view">
+        <field name="name">dam.rule.list</field>
+        <field name="model">dam.rule</field>
+        <field name="arch" type="xml">
+            <tree><field name="name"/><field name="model_id"/><field name="button_id"/>
+                <field name="approval_type"/><field name="company_id" groups="base.group_multi_company"/>
+                <field name="active" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_dam_rule_form" model="ir.ui.view">
+        <field name="name">dam.rule.form</field>
+        <field name="model">dam.rule</field>
+        <field name="arch" type="xml">
+            <form string="Approval Matrix">
+                <header><button name="action_refresh_buttons" type="object" string="Refresh Buttons"/></header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name" placeholder="Approval Matrix"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="approval_type"/>
+                            <field name="model_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="button_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="model_domain" placeholder="[]"/>
+                            <field name="amount_field_id" invisible="approval_type != 'amount'" required="approval_type == 'amount'" options="{'no_create': True, 'no_open': True}"/>
+                        </group>
+                        <group>
+                            <field name="remark"/>
+                            <field name="active" widget="boolean_toggle"/>
+                            <field name="company_id" options="{'no_create': True}"/>
+                            <field name="currency_id" invisible="approval_type != 'amount'"/>
+                        </group>
+                    </group>
+                    <field name="line_ids" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="user_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                            <field name="min_amount" column_invisible="parent.approval_type != 'amount'"/>
+                            <field name="max_amount" column_invisible="parent.approval_type != 'amount'"/>
+                            <field name="level"/>
+                        </tree>
+                    </field>
+                    <div class="text-muted mt-3">One listed approver completes each level by signing and entering a remark. Each wizard approves only one level. Amount limits use the selected company's currency. Buttons calling the same method share approval.</div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_dam_rule_search" model="ir.ui.view">
+        <field name="name">dam.rule.search</field><field name="model">dam.rule</field>
+        <field name="arch" type="xml"><search><field name="name"/><field name="model_id"/>
+            <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
+        </search></field>
+    </record>
+    <record id="view_dam_request_list" model="ir.ui.view">
+        <field name="name">dam.request.list</field><field name="model">dam.request</field>
+        <field name="arch" type="xml"><tree create="0" edit="0" delete="0">
+            <field name="name"/><field name="requested_by"/><field name="create_date"/>
+            <field name="model_id"/><field name="document_name"/><field name="res_id" optional="show"/>
+            <field name="model_name" optional="hide"/><field name="button_label" optional="show"/>
+            <field name="state"/><field name="company_id" groups="base.group_multi_company"/>
+        </tree></field>
+    </record>
+    <record id="view_dam_request_form" model="ir.ui.view">
+        <field name="name">dam.request.form</field><field name="model">dam.request</field>
+        <field name="arch" type="xml"><form create="0" edit="0" delete="0">
+            <header><button name="action_open_document" type="object" string="Open Document"/>
+                <button name="action_open_reset" type="object" string="Reset Approval" invisible="state not in ['pending', 'rejected']" groups="dynamic_approval_matrix.group_dam_manager"/>
+                <field name="state" widget="statusbar"/>
+            </header>
+            <sheet><h1><field name="name"/></h1>
+                <group><group><field name="rule_id"/><field name="requested_by"/><field name="create_date"/></group>
+                    <group><field name="company_id"/><field name="amount"/><field name="currency_id" invisible="1"/></group>
+                </group>
+                <group string="Source Document">
+                    <group><field name="model_id" options="{'no_open': True}"/><field name="model_name"/>
+                        <field name="res_id"/>
+                    </group>
+                    <group><field name="document_name"/><field name="button_label"/><field name="method_name"/></group>
+                </group>
+                <notebook><page string="Approval Levels"><field name="step_ids"><tree create="0" edit="0" delete="0">
+                    <field name="level"/><field name="user_ids" widget="many2many_tags"/><field name="state"/>
+                    <field name="approved_by"/><field name="approved_at"/>
+                    <field name="rejected_by" optional="show"/><field name="rejected_at" optional="show"/>
+                    <field name="notified_at" optional="hide"/>
+                    <field name="email_notified_at" optional="hide"/>
+                    <field name="remark"/>
+                </tree><form create="0" edit="0" delete="0"><group>
+                    <field name="level"/><field name="user_ids" widget="many2many_tags"/>
+                    <field name="state"/><field name="approved_by"/><field name="approved_at"/>
+                    <field name="rejected_by"/><field name="rejected_at"/>
+                    <field name="signature" widget="image" options="{'size': [300, 120]}"/>
+                    <field name="remark"/>
+                </group></form></field></page>
+                <page string="History"><field name="event_ids"><tree create="0" edit="0" delete="0">
+                    <field name="event_at"/><field name="user_id"/><field name="level"/>
+                    <field name="kind"/><field name="message"/>
+                    <field name="remark"/>
+                </tree><form create="0" edit="0" delete="0"><group>
+                    <field name="event_at"/><field name="user_id"/><field name="level"/>
+                    <field name="kind"/><field name="message"/>
+                    <field name="signature" widget="image" options="{'size': [300, 120]}"/>
+                    <field name="remark"/>
+                </group></form></field></page></notebook>
+            </sheet>
+        </form></field>
+    </record>
+    <record id="action_dam_rules" model="ir.actions.act_window">
+        <field name="name">Approval Matrix</field><field name="res_model">dam.rule</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="action_dam_requests" model="ir.actions.act_window">
+        <field name="name">Approval Transactions</field><field name="res_model">dam.request</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_dam_root" name="Dynamic Approval" sequence="65" groups="group_dam_manager" web_icon="dynamic_approval_matrix,static/description/icon.png"/>
+    <menuitem id="menu_dam_rules" name="Approval Matrix" parent="menu_dam_root" action="action_dam_rules" sequence="10"/>
+    <menuitem id="menu_dam_requests" name="Transactions" parent="menu_dam_root" action="action_dam_requests" sequence="20"/>
+</odoo>

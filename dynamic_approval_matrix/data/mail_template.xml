@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="mail_template_next_approver" model="mail.template">
+        <field name="name">Dynamic Approval: Next Approver</field>
+        <field name="model_id" ref="model_dam_step"/>
+        <field name="subject">Approval Required: {{ object.request_id.document_name or object.request_id.name }}</field>
+        <field name="email_from">{{ object.company_id.partner_id.email_formatted or user.email_formatted }}</field>
+        <field name="auto_delete" eval="False"/>
+        <field name="body_html" type="html">
+            <div>
+                <p>Your approval is required.</p>
+                <p><strong t-out="object.request_id.document_name or object.request_id.name"/><br/>
+                    <span t-out="object.request_id.button_label"/><br/>
+                    Approval Level: <span t-out="object.level"/>
+                </p>
+                <p><a t-att-href="object._get_approval_document_url()">Open Document</a></p>
+                <p>Please sign in to Odoo to review and approve this document.</p>
+            </div>
+        </field>
+    </record>
+</odoo>
