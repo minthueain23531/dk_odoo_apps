@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="sale_order_terms_design" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//span[@name='order_note']" position="attributes">
+            <attribute name="class" add="o_sale_terms_template" separator=" "/>
+        </xpath>
+        <xpath expr="//span[@name='order_note']" position="before">
+            <style>
+                .o_sale_terms_template { display: block; font-size: 11pt; line-height: 1.5; overflow-wrap: break-word; }
+                .o_sale_terms_template h1, .o_sale_terms_template h2, .o_sale_terms_template h3 { page-break-after: avoid; }
+                .o_sale_terms_template table { width: 100%; border-collapse: collapse; }
+                .o_sale_terms_template th, .o_sale_terms_template td { padding: 6px; vertical-align: top; }
+                .o_sale_terms_template tr { page-break-inside: avoid; }
+                .o_sale_terms_template img { max-width: 100%; }
+            </style>
+        </xpath>
+    </template>
+</odoo>
