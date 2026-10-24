@@ -1,0 +1,7 @@
+<odoo>
+    <record id="html_template_company_rule" model="ir.rule">
+        <field name="name">HTML templates: allowed companies</field>
+        <field name="model_id" ref="model_html_content_template"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

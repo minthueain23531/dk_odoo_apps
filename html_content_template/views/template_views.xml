@@ -1,0 +1,34 @@
+<odoo>
+    <record id="html_template_list" model="ir.ui.view">
+        <field name="name">html.content.template.list</field><field name="model">html.content.template</field>
+        <field name="arch" type="xml"><list>
+            <field name="sequence" widget="handle"/><field name="name"/><field name="company_id"/>
+            <field name="model_id"/><field name="field_id"/><field name="domain"/>
+        </list></field>
+    </record>
+    <record id="html_template_form" model="ir.ui.view">
+        <field name="name">html.content.template.form</field><field name="model">html.content.template</field>
+        <field name="arch" type="xml"><form><sheet>
+            <field name="active" invisible="1"/>
+            <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+            <div class="oe_title"><label for="name"/><h1><field name="name" placeholder="e.g. Standard Sales Terms"/></h1></div>
+            <group><group><field name="company_id"/><field name="sequence"/></group>
+                <group><field name="model_id" options="{'no_create': True}"/><field name="field_id" options="{'no_create': True}"/></group>
+            </group>
+            <group string="Matching Conditions" col="2"><label for="domain"/>
+                <div class="w-100" style="min-width: 0;">
+                    <field name="domain" class="w-100 font-monospace" style="width: 100%;" placeholder="[('partner_id.name', '=', 'Min Thu')]"/>
+                    <div class="text-muted">Lowest sequence wins per field. Put the [] default last.</div>
+                </div>
+            </group>
+            <separator string="HTML Content"/>
+            <div class="border rounded p-3"><field name="content_html" widget="html" nolabel="1" class="w-100"/></div>
+            <div class="text-muted mt-3">On the selected model, use Action → Apply Terms. This replaces matching fields on selected saved records. It does not apply automatically on create.</div>
+        </sheet></form></field>
+    </record>
+    <record id="html_template_action" model="ir.actions.act_window">
+        <field name="name">HTML Content Templates</field><field name="res_model">html.content.template</field><field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="html_template_root" name="HTML Templates" sequence="95" groups="base.group_system"/>
+    <menuitem id="html_template_menu" name="Templates" parent="html_template_root" action="html_template_action" sequence="10"/>
+</odoo>
