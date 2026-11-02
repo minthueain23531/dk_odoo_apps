@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_pam_migration_batch,Migration batches,model_pam_migration_batch,base.group_system,1,1,1,0
+access_pam_migration_config,Migration mappings,model_pam_migration_config,base.group_system,1,1,1,0
+access_pam_migration_document,Migration documents,model_pam_migration_document,base.group_system,1,1,1,0
+access_pam_migration_evidence,Migration evidence,model_pam_migration_evidence,base.group_system,1,1,1,0
+access_pam_migration_run,Automatic migration,model_pam_migration_run,base.group_system,1,1,1,0
+access_pam_migration_log,Migration logs,model_pam_migration_log,base.group_system,1,0,1,0

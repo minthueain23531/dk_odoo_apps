@@ -1,0 +1,7 @@
+<odoo>
+    <record id="runtime_scope_company" model="ir.rule">
+        <field name="name">Permanent approval scope companies</field>
+        <field name="model_id" ref="model_pam_runtime_scope"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

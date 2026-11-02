@@ -1,0 +1,8 @@
+<odoo>
+    <record id="rule_run_company" model="ir.rule"><field name="name">Migration dashboard companies</field><field name="model_id" ref="model_pam_migration_run"/><field name="domain_force">[('company_id', 'in', company_ids)]</field></record>
+    <record id="rule_log_company" model="ir.rule"><field name="name">Migration log companies</field><field name="model_id" ref="model_pam_migration_log"/><field name="domain_force">[('company_id', 'in', company_ids)]</field></record>
+    <record id="rule_batch_company" model="ir.rule"><field name="name">Migration batch companies</field><field name="model_id" ref="model_pam_migration_batch"/><field name="domain_force">[('company_id', 'in', company_ids)]</field></record>
+    <record id="rule_config_company" model="ir.rule"><field name="name">Migration mapping companies</field><field name="model_id" ref="model_pam_migration_config"/><field name="domain_force">[('company_id', 'in', company_ids)]</field></record>
+    <record id="rule_document_company" model="ir.rule"><field name="name">Migration document companies</field><field name="model_id" ref="model_pam_migration_document"/><field name="domain_force">[('company_id', 'in', company_ids)]</field></record>
+    <record id="rule_evidence_company" model="ir.rule"><field name="name">Migration evidence companies</field><field name="model_id" ref="model_pam_migration_evidence"/><field name="domain_force">[('company_id', 'in', company_ids)]</field></record>
+</odoo>

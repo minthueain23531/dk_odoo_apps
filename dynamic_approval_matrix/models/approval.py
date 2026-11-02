@@ -612,6 +612,20 @@ class ApprovalStep(models.Model):
     notified_at = fields.Datetime(string='Approvers Notified At', readonly=True, copy=False)
     email_notified_at = fields.Datetime(string='Approval Email Queued At', readonly=True, copy=False)
 
+    def _get_dam_steps(self, env, domain=None, order=None, limit=None):
+        if not env:
+            return self
+
+        env_domain = [
+            ('request_id.res_id', '=', env.id),
+            ('request_id.model_name', '=', env._name),
+        ]
+
+        if domain:
+            env_domain += domain
+        return self.search(env_domain, order=order, limit=limit)
+
+
     def _get_approval_document_url(self):
         self.ensure_one()
         request = self.request_id

@@ -1,0 +1,35 @@
+<odoo>
+    <!-- Retain old staging records for audit, but remove the manual workflow menus. -->
+    <record id="menu_migration_root" model="ir.ui.menu"><field name="active" eval="False"/></record>
+    <record id="view_automatic_migration" model="ir.ui.view">
+        <field name="name">pam.migration.run.form</field><field name="model">pam.migration.run</field>
+        <field name="arch" type="xml"><form create="0" delete="0">
+            <header><button name="action_run" type="object" string="Run Migration" class="btn-primary"/></header>
+            <sheet>
+                <div class="alert alert-info" role="alert">Click Run Migration once. Active-source rules are activated. Existing Dynamic records are not compared or deleted. Any error stops the run and rolls back all new imports from that attempt. Source data and legacy approval controls remain unchanged.</div>
+                <group><field name="company_id"/><field name="last_run"/><field name="state"/></group>
+                <field name="summary" nolabel="1"/>
+                <field name="log_ids"><list create="0" edit="0" delete="0" decoration-danger="status == 'error'" decoration-success="status == 'success'">
+                    <field name="create_date"/><field name="status"/><field name="source_model"/><field name="source_res_id"/><field name="document_res_id"/><field name="message"/>
+                </list></field>
+            </sheet>
+        </form></field>
+    </record>
+    <record id="view_migration_log_list" model="ir.ui.view"><field name="name">pam.migration.log.list</field><field name="model">pam.migration.log</field>
+        <field name="arch" type="xml"><list create="0" edit="0" delete="0" decoration-danger="status == 'error'">
+            <field name="create_date"/><field name="company_id"/><field name="status"/><field name="source_model"/><field name="source_res_id"/><field name="document_res_id"/><field name="message"/>
+        </list></field>
+    </record>
+    <record id="view_migration_log_form" model="ir.ui.view"><field name="name">pam.migration.log.form</field><field name="model">pam.migration.log</field>
+        <field name="arch" type="xml"><form create="0" edit="0" delete="0"><sheet><group>
+            <field name="run_id"/><field name="company_id"/><field name="create_date"/><field name="status"/><field name="source_model"/><field name="source_res_id"/><field name="document_res_id"/>
+        </group><field name="message"/><field name="details"/></sheet></form></field>
+    </record>
+    <record id="action_open_automatic_migration" model="ir.actions.server">
+        <field name="name">Approval Migration</field><field name="model_id" ref="model_pam_migration_run"/>
+        <field name="state">code</field><field name="code">action = model.open_dashboard()</field>
+    </record>
+    <record id="action_migration_logs" model="ir.actions.act_window"><field name="name">Migration Logs</field><field name="res_model">pam.migration.log</field><field name="view_mode">list,form</field></record>
+    <menuitem id="menu_automatic_migration" name="Run Migration" parent="dynamic_approval_matrix.menu_dam_root" action="action_open_automatic_migration" groups="base.group_system" sequence="90"/>
+    <menuitem id="menu_migration_logs" name="Migration Logs" parent="dynamic_approval_matrix.menu_dam_root" action="action_migration_logs" groups="base.group_system" sequence="91"/>
+</odoo>
