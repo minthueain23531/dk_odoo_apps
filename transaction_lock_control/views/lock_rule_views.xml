@@ -1,0 +1,94 @@
+<odoo>
+    <record id="view_transaction_lock_rule_list" model="ir.ui.view">
+        <field name="name">transaction.lock.rule.list</field>
+        <field name="model">transaction.lock.rule</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="model_id"/>
+                <field name="date_field_id"/>
+                <field name="lock_sales"/>
+                <field name="lock_purchases"/>
+                <field name="lock_tax"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_transaction_lock_rule_form" model="ir.ui.view">
+        <field name="name">transaction.lock.rule.form</field>
+        <field name="model">transaction.lock.rule</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_discover" type="object" string="Discover Buttons &amp; Detail Models" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="alert alert-info" role="alert">
+                        Everything and Hard Lock always apply. Active default Odoo exceptions are respected;
+                        Hard Lock has no exception. Restrictions are checked on the server, including imports and API calls.
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="active"/>
+                            <field name="company_id" options="{'no_create': True}"/>
+                            <field name="model_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="model_name" invisible="1"/>
+                            <field name="date_field_id" domain="[('model_id', '=', model_id), ('ttype', 'in', ['date', 'datetime'])]" options="{'no_create': True}"/>
+                            <field name="company_field_id" domain="[('model_id', '=', model_id), ('ttype', '=', 'many2one'), ('relation', '=', 'res.company')]" options="{'no_create': True}"/>
+                            <field name="timezone"/>
+                            <field name="missing_date_policy"/>
+                        </group>
+                        <group string="Additional Lock Categories">
+                            <field name="lock_sales"/>
+                            <field name="lock_purchases"/>
+                            <field name="lock_tax"/>
+                            <separator string="Restrictions"/>
+                            <field name="prevent_create"/>
+                            <field name="prevent_delete"/>
+                            <field name="lock_all_fields"/>
+                            <field name="exempt_field_ids" widget="many2many_tags" domain="[('model_id', '=', model_id)]" options="{'no_create': True}" invisible="not lock_all_fields"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="record_domain"/>
+                    </group>
+                    <notebook>
+                        <page string="Prevent Actions">
+                            <p>Discover object buttons, then select Prevent Action. Print and navigation actions remain available unless explicitly restricted. Wizard completion methods must also be reviewed.</p>
+                            <field name="action_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="method_name"/>
+                                    <field name="blocked"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Detail Protection">
+                            <p>With Prevent Edit enabled, these detail models cannot be added, edited, deleted or reassigned when their parent is locked. Add nested detail paths as needed.</p>
+                            <field name="binding_ids">
+                                <list editable="bottom">
+                                    <field name="model_id" options="{'no_create': True}"/>
+                                    <field name="parent_link"/>
+                                    <field name="enabled"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_transaction_lock_rules" model="ir.actions.act_window">
+        <field name="name">Transaction Lock Rules</field>
+        <field name="res_model">transaction.lock.rule</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_transaction_lock_control_root" name="Transaction Lock Control"
+              action="action_transaction_lock_rules" groups="account.group_account_manager" web_icon="transaction_lock_control,static/description/icon.png" sequence="95"/>
+    <menuitem id="menu_transaction_lock_rules" name="Transaction Lock Rules"
+              parent="account.menu_finance_configuration" action="action_transaction_lock_rules"
+              groups="account.group_account_manager" sequence="95"/>
+</odoo>

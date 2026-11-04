@@ -1,0 +1,17 @@
+<odoo>
+    <record id="rule_lock_company" model="ir.rule">
+        <field name="name">Transaction lock rules: allowed companies</field>
+        <field name="model_id" ref="model_transaction_lock_rule"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_binding_company" model="ir.rule">
+        <field name="name">Transaction lock details: allowed companies</field>
+        <field name="model_id" ref="model_transaction_lock_binding"/>
+        <field name="domain_force">[('rule_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_action_company" model="ir.rule">
+        <field name="name">Transaction lock actions: allowed companies</field>
+        <field name="model_id" ref="model_transaction_lock_action"/>
+        <field name="domain_force">[('rule_id.company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

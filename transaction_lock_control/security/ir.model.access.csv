@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_lock_rule_manager,transaction.lock.rule manager,model_transaction_lock_rule,account.group_account_manager,1,1,1,1
+access_lock_binding_manager,transaction.lock.binding manager,model_transaction_lock_binding,account.group_account_manager,1,1,1,1
+access_lock_action_manager,transaction.lock.action manager,model_transaction_lock_action,account.group_account_manager,1,1,1,1
