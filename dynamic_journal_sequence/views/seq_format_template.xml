@@ -1,0 +1,35 @@
+<odoo>
+    <record id="view_sequence_format_template_list" model="ir.ui.view">
+        <field name="name">sequence.format.template.list</field>
+        <field name="model">sequence.format.template</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="format"/>
+                <field name="active" optional="hide"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_sequence_format_template_form" model="ir.ui.view">
+        <field name="name">sequence.format.template.form</field>
+        <field name="model">sequence.format.template</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="format" placeholder="{journal}/{seq_code}/{date:%y%m%d}/{seq:04d}"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_sequence_format_template" model="ir.actions.act_window">
+        <field name="name">Sequence Format Templates</field>
+        <field name="res_model">sequence.format.template</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_sequence_format_template" name="Sequence Format Templates" parent="account.menu_finance_configuration"
+        action="action_sequence_format_template" sequence="95" groups="account.group_account_manager"/>
+</odoo>
