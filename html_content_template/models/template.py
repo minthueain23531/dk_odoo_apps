@@ -20,8 +20,9 @@ class HtmlContentTemplate(models.Model):
     model_name = fields.Char(related="model_id.model")
     field_id = fields.Many2one("ir.model.fields", string="Field to Apply", required=True, ondelete="cascade",
         domain="[('model_id', '=', model_id), ('ttype', '=', 'html'), ('readonly', '=', False)]")
-    domain = fields.Char(required=True, default="[]", help="Static Odoo domain on the selected model, e.g. [('partner_id.name', '=', 'Min Thu')]. [] matches every accessible record in the selected company.")
+    domain = fields.Char(required=True, default="[]",related='domain_format_id.domain',store=True, help="Static Odoo domain on the selected model, e.g. [('partner_id.name', '=', 'Min Thu')]. [] matches every accessible record in the selected company.")
     content_html = fields.Html(string="HTML Content", required=True, translate=True, sanitize=True)
+    domain_format_id = fields.Many2one('html.domain.format', string="Domain")
 
     @api.onchange("model_id")
     def _onchange_model_id(self):

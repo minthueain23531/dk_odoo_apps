@@ -5,7 +5,7 @@
     "category": "Productivity",
     "license": "LGPL-3",
     "depends": ["base", "web"],
-    "data": ["security/ir.model.access.csv", "security/template_security.xml", "views/template_views.xml"],
+    "data": ["security/ir.model.access.csv", "security/template_security.xml", "views/template_views.xml", "views/domain_formats.xml"],
     "uninstall_hook": "uninstall_hook",
     "installable": True,
     "application": True,
